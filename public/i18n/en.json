@@ -1,0 +1,52 @@
+
+{
+    "home": {
+    "WelcomeMessage": "Welcome to Amazoun, your one-stop shop for everything you need!"
+  },
+  "navbar": {
+    "search": {
+      "placeholder": "Search products..."
+    },
+    "products": "Products",
+    "deals": "Deals",
+    "categories": "Categories",
+    "cart": "Cart",
+    "account": "Account",
+    "language": "Language"
+  },
+  "footer": {
+    "about": {
+      "title": "About",
+      "company": "Our Company",
+      "careers": "Careers",
+      "press": "Press",
+      "blog": "Blog"
+    },
+    "service": {
+      "title": "Customer Service",
+      "help": "Help Center",
+      "returns": "Returns",
+      "shipping": "Shipping",
+      "contact": "Contact Us"
+    },
+    "quick": {
+      "title": "Quick Links",
+      "products": "All Products",
+      "deals": "Special Offers",
+      "new": "New Arrivals",
+      "bestsellers": "Best Sellers"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Subscribe to receive our exclusive offers",
+      "placeholder": "Your email",
+      "button": "Subscribe"
+    },
+    "bottom": {
+      "rights": "All rights reserved.",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies"
+    }
+  }
+}

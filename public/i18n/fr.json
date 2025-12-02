@@ -1,0 +1,51 @@
+{
+    "home": {
+    "WelcomeMessage": "Bienvenue sur Amazoun Market, votre boutique tout-en-un pour tout ce dont vous avez besoin !"
+  },
+  "navbar": {
+    "search": {
+      "placeholder": "Rechercher des produits..."
+    },
+    "products": "Produits",
+    "deals": "Promotions",
+    "categories": "Catégories",
+    "cart": "Panier",
+    "account": "Compte",
+    "language": "Langue"
+  },
+  "footer": {
+    "about": {
+      "title": "À propos",
+      "company": "Notre entreprise",
+      "careers": "Carrières",
+      "press": "Presse",
+      "blog": "Blog"
+    },
+    "service": {
+      "title": "Service Client",
+      "help": "Centre d'aide",
+      "returns": "Retours",
+      "shipping": "Livraison",
+      "contact": "Nous contacter"
+    },
+    "quick": {
+      "title": "Liens rapides",
+      "products": "Tous les produits",
+      "deals": "Offres spéciales",
+      "new": "Nouveautés",
+      "bestsellers": "Meilleures ventes"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Inscrivez-vous pour recevoir nos offres exclusives",
+      "placeholder": "Votre email",
+      "button": "S'inscrire"
+    },
+    "bottom": {
+      "rights": "Tous droits réservés.",
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "cookies": "Cookies"
+    }
+  }
+}
