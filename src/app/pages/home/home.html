@@ -1,1 +1,85 @@
-<p>{{ 'home.WelcomeMessage' | translate }}</p>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>{{ 'home.hero.title' | translate }}</h1>
+    <p>{{ 'home.hero.subtitle' | translate }}</p>
+    <button class="btn btn-primary" (click)="viewAllProducts()">
+      {{ 'home.hero.cta' | translate }}
+    </button>
+  </div>
+</section>
+
+<!-- Products Section -->
+<section class="products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ 'home.products.title' | translate }}</h2>
+      <button class="btn btn-secondary" (click)="viewAllProducts()">
+        {{ 'home.products.viewAll' | translate }} →
+      </button>
+    </div>
+
+    <!-- Error Message -->
+    @if(error()) {
+      <div class="error-message">
+        ⚠️ {{ error() }}
+      </div>
+    }
+
+    <!-- Products Grid -->
+    @if(featuredProducts().length > 0) {
+      <div class="products-grid">
+        <div *ngFor="let product of featuredProducts()" class="product-card">
+          <!-- Product Image -->
+          <div class="product-image" (click)="viewProductDetails(product.id)">
+            @if(product.imageUrl) {
+              <img [src]="product.imageUrl" [alt]="product.name">
+            } @else {
+              <div class="no-image">📦</div>
+            }
+            
+            <!-- Stock Badge -->
+            @if(product.stock === 0) {
+              <span class="badge badge-out">{{ 'home.products.outOfStock' | translate }}</span>
+            } @else if(product.stock < 10) {
+              <span class="badge badge-low">{{ 'home.products.badges.hot' | translate }}</span>
+            }
+          </div>
+
+          <!-- Product Info -->
+          <div class="product-info">
+            <h3 (click)="viewProductDetails(product.id)">{{ product.name }}</h3>
+            
+            @if(product.description) {
+              <p class="product-description">{{ product.description }}</p>
+            }
+
+            <!-- Price & Stock -->
+            <div class="product-footer">
+              <div class="price-section">
+                <span class="price">${{ product.price.toFixed(2) }}</span>
+                <span class="stock-info" [class.in-stock]="product.stock > 0">
+                  {{ product.stock > 0 ? ('home.products.inStock' | translate) : ('home.products.outOfStock' | translate) }}
+                </span>
+              </div>
+
+              <!-- Add to Cart Button -->
+              <button 
+                class="btn btn-cart"
+                [disabled]="product.stock === 0"
+                (click)="addToCart(product)">
+                🛒 {{ 'home.products.addToCart' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <!-- Loading State -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ 'home.products.loading' | translate }}</p>
+      </div>
+    }
+  </div>
+</section>

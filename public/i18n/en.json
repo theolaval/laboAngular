@@ -1,7 +1,39 @@
-
 {
-    "home": {
-    "WelcomeMessage": "Welcome to Amazoun, your one-stop shop for everything you need!"
+  "home": {
+    "WelcomeMessage": "Welcome to Amazoun Market, your one-stop shop for everything you need!",
+    "hero": {
+      "title": "Welcome to Amazoun Market",
+      "subtitle": "Discover thousands of products at the best prices",
+      "cta": "View all products"
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "electronics": "Electronics",
+      "fashion": "Fashion",
+      "home": "Home",
+      "books": "Books",
+      "sports": "Sports",
+      "toys": "Toys & Games"
+    },
+    "products": {
+      "title": "Popular Products",
+      "viewAll": "View all",
+      "loading": "Loading products...",
+      "reviews": "reviews",
+      "inStock": "In Stock",
+      "outOfStock": "Out of Stock",
+      "addToCart": "Add to Cart",
+      "badges": {
+        "bestseller": "Bestseller",
+        "new": "New",
+        "hot": "Hot"
+      }
+    },
+    "promo": {
+      "title": "Special Offers up to -50%",
+      "subtitle": "Don't miss our exclusive promotions",
+      "cta": "View deals"
+    }
   },
   "navbar": {
     "search": {

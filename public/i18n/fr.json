@@ -1,6 +1,39 @@
 {
-    "home": {
-    "WelcomeMessage": "Bienvenue sur Amazoun Market, votre boutique tout-en-un pour tout ce dont vous avez besoin !"
+  "home": {
+    "WelcomeMessage": "Bienvenue sur Amazoun Market, votre boutique tout-en-un pour tout ce dont vous avez besoin !",
+    "hero": {
+      "title": "Bienvenue sur Amazoun Market",
+      "subtitle": "Découvrez des milliers de produits aux meilleurs prix",
+      "cta": "Voir tous les produits"
+    },
+    "categories": {
+      "title": "Parcourir par catégorie",
+      "electronics": "Électronique",
+      "fashion": "Mode",
+      "home": "Maison",
+      "books": "Livres",
+      "sports": "Sports",
+      "toys": "Jeux & Jouets"
+    },
+    "products": {
+      "title": "Produits populaires",
+      "viewAll": "Voir tout",
+      "loading": "Chargement des produits...",
+      "reviews": "avis",
+      "inStock": "En stock",
+      "outOfStock": "Rupture de stock",
+      "addToCart": "Ajouter au panier",
+      "badges": {
+        "bestseller": "Meilleures ventes",
+        "new": "Nouveau",
+        "hot": "Populaire"
+      }
+    },
+    "promo": {
+      "title": "Offres spéciales jusqu'à -50%",
+      "subtitle": "Ne manquez pas nos promotions exclusives",
+      "cta": "Voir les offres"
+    }
   },
   "navbar": {
     "search": {
