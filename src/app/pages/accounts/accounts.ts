@@ -40,7 +40,6 @@ export class Accounts implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    // Écouter les changements d'utilisateur
     this.authService.currentUser$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(user => {
@@ -48,27 +47,20 @@ export class Accounts implements OnInit, OnDestroy {
       this.isLoggedIn.set(!!user);
     });
     
-    // Vérifier si l'utilisateur est connecté
     if (this.authService.isLoggedIn()) {
       const currentUser = this.authService.getCurrentUser();
       
-      // Si l'utilisateur existe mais n'a pas de username, récupérer depuis le backend
       if (!currentUser || !currentUser.username) {
-        console.log('User incomplete, fetching from backend...');
         this.authService.getCurrentUserFromBackend().subscribe({
           next: (response) => {
-            console.log('User fetched from backend:', response.user);
             this.currentUser.set(response.user);
             this.isLoggedIn.set(true);
           },
           error: (error) => {
-            console.error('Failed to fetch user:', error);
-            // Si échec, déconnecter l'utilisateur
             this.authService.logout();
           }
         });
       } else {
-        console.log('User loaded from localStorage:', currentUser);
         this.currentUser.set(currentUser);
         this.isLoggedIn.set(true);
       }
@@ -146,13 +138,7 @@ export class Accounts implements OnInit, OnDestroy {
 
     this.authService.register(registerRequest).subscribe({
       next: (response) => {
-        console.log('Registration successful:', response);
-        
-        // Si l'inscription réussit mais pas de token, se connecter automatiquement
         if (!response || !response.token) {
-          console.log('No token received, logging in automatically...');
-          
-          // Se connecter automatiquement avec les identifiants d'inscription
           const loginRequest: LoginRequest = {
             username: registerRequest.username,
             password: registerRequest.password
@@ -162,27 +148,22 @@ export class Accounts implements OnInit, OnDestroy {
             next: (loginResponse) => {
               this.isLoading.set(false);
               
-              // Afficher le message de succès
               this.translateService.get('accounts.messages.registerSuccess').subscribe(message => {
                 this.successMessage.set(message);
               });
               
-              // Mettre à jour l'état de connexion et l'utilisateur
               this.isLoggedIn.set(true);
               this.currentUser.set(loginResponse.user);
               this.showRegister.set(false);
               this.resetRegisterForm();
               
-              // Effacer le message après 3 secondes
               setTimeout(() => {
                 this.successMessage.set('');
               }, 3000);
             },
             error: (loginError) => {
               this.isLoading.set(false);
-              console.error('Auto-login error:', loginError);
               
-              // Afficher quand même le message de succès d'inscription
               this.translateService.get('accounts.messages.registerSuccess').subscribe(message => {
                 this.successMessage.set(message + ' Veuillez vous connecter.');
               });
@@ -192,21 +173,17 @@ export class Accounts implements OnInit, OnDestroy {
             }
           });
         } else {
-          // Si on a bien reçu le token et l'utilisateur
           this.isLoading.set(false);
           
-          // Afficher le message de succès
           this.translateService.get('accounts.messages.registerSuccess').subscribe(message => {
             this.successMessage.set(message);
           });
           
-          // Mettre à jour l'état de connexion et l'utilisateur
           this.isLoggedIn.set(true);
           this.currentUser.set(response.user);
           this.showRegister.set(false);
           this.resetRegisterForm();
           
-          // Effacer le message après 3 secondes
           setTimeout(() => {
             this.successMessage.set('');
           }, 3000);
@@ -214,7 +191,6 @@ export class Accounts implements OnInit, OnDestroy {
       },
       error: (error: any) => {
         this.isLoading.set(false);
-        console.error('Registration error:', error);
         const message = error?.message || 'Une erreur est survenue. Veuillez réessayer.';
         this.errorMessage.set(message);
       }

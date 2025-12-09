@@ -62,13 +62,6 @@ export class HomeComponent implements OnInit {
   addToCart(product: Product) {
     if (product.stock > 0) {
       this.cartService.addToCart(product);
-      
-      // Afficher un message de confirmation
-      this.translateService.get('home.products.addedToCart', { productName: product.name })
-        .subscribe(message => {
-          // Vous pouvez implémenter un toast/notification ici
-          console.log(message || `${product.name} ajouté au panier !`);
-        });
     } else {
       this.translateService.get('home.products.outOfStockMessage')
         .subscribe(message => {
