@@ -2,6 +2,7 @@ import { Component, inject, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Accounts } from '../../../pages/accounts/accounts';
 
 @Component({
   selector: 'app-navbar',

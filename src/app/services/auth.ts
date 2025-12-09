@@ -22,37 +22,94 @@ export class AuthService extends ApiService {
   }
 
   private getUserFromStorage(): User | null {
-    const userJson = localStorage.getItem('user');
-    return userJson ? JSON.parse(userJson) : null;
+    try {
+      const userJson = localStorage.getItem('user');
+      if (userJson && userJson !== 'undefined') {
+        const user = JSON.parse(userJson);
+        return user;
+      }
+      return null;
+    } catch (error) {
+      localStorage.removeItem('user');
+      return null;
+    }
   }
 
-  // Connexion
+  private decodeToken(token: string): User | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      
+      const user: User = {
+        id: parseInt(
+          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || 
+          payload.nameid || 
+          payload.sub || 
+          payload.id
+        ),
+        username: 
+          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+          payload.unique_name || 
+          payload.username || 
+          payload.name,
+        email: 
+          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+          payload.email,
+        birthdate: 
+          payload.birthdate ||
+          payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/dateofbirth'],
+        role: 
+          payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+          payload.role
+      };
+      
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
+
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.endpoint}/login`, credentials)
       .pipe(
         tap(response => {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          
+          if (response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+            this.currentUserSubject.next(response.user);
+          } else {
+            const user = this.decodeToken(response.token);
+            if (user) {
+              localStorage.setItem('user', JSON.stringify(user));
+              this.currentUserSubject.next(user);
+            }
+          }
         }),
-        catchError(this.handleError)
+        catchError(error => this.handleError(error))
       );
   }
 
-  // Inscription
   register(userData: RegisterRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.endpoint}/register`, userData)
       .pipe(
         tap(response => {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          
+          if (response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+            this.currentUserSubject.next(response.user);
+          } else {
+            const user = this.decodeToken(response.token);
+            if (user) {
+              localStorage.setItem('user', JSON.stringify(user));
+              this.currentUserSubject.next(user);
+            }
+          }
         }),
-        catchError(this.handleError)
+        catchError(error => this.handleError(error))
       );
   }
 
-  // Déconnexion
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -60,17 +117,27 @@ export class AuthService extends ApiService {
     this.router.navigate(['/login']);
   }
 
-  // Vérifier si l'utilisateur est connecté
+  getCurrentUserFromBackend(): Observable<LoginResponse> {
+    return this.http.get<LoginResponse>(`${this.endpoint}/me`)
+      .pipe(
+        tap(response => {
+          localStorage.setItem('user', JSON.stringify(response.user));
+          this.currentUserSubject.next(response.user);
+        }),
+        catchError(error => {
+          return this.handleError(error);
+        })
+      );
+  }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // Obtenir l'utilisateur actuel
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
-  // Obtenir le token
   getToken(): string | null {
     return localStorage.getItem('token');
   }

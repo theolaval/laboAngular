@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core'; // ✅ Ajout
+import { TranslateModule } from '@ngx-translate/core'; 
 import { environment } from '../../../environments/environment';
 
 interface Product {
@@ -24,7 +24,7 @@ interface Category {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TranslateModule], // ✅ TranslateModule ajouté
+  imports: [CommonModule, TranslateModule],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
@@ -49,18 +49,15 @@ export class HomeComponent implements OnInit {
       next: (data) => {
         this.products.set(data);
         this.featuredProducts.set(data.slice(0, 8));
-        console.log('✅ Produits chargés:', data);
       },
       error: (err) => {
         this.error.set('Erreur lors du chargement des produits');
-        console.error('❌ Erreur:', err);
       }
     });
 }
 
   addToCart(product: Product) {
     if (product.stock > 0) {
-      console.log('Ajout au panier:', product);
       alert(`${product.name} ajouté au panier !`);
     } else {
       alert('Produit en rupture de stock');

@@ -23,14 +23,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        console.warn('Session expirée');
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        router.navigate(['/login']);
+        if (!req.url.includes('/api/auth/me')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          router.navigate(['/accounts']);
+        }
       }
 
       if (error.status === 403) {
-        console.error('Accès refusé');
         router.navigate(['/unauthorized']);
       }
 

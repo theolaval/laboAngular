@@ -46,6 +46,55 @@
     "account": "Account",
     "language": "Language"
   },
+  "accounts": {
+    "profile": {
+      "title": "'s Profile",
+      "role": "Role",
+      "username": "Username",
+      "email": "Email",
+      "birthdate": "Date of Birth",
+      "userId": "User ID",
+      "logout": "Logout"
+    },
+    "login": {
+      "title": "Login",
+      "subtitle": "Welcome back! Please login to your account",
+      "username": "Username",
+      "password": "Password",
+      "usernameplaceholder": "Enter your username",
+      "passwordplaceholder": "Enter your password",
+      "button": "Login",
+      "logging": "Logging in...",
+      "register": "Register here",
+      "noAccount": "Don't have an account?"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join us today and start shopping",
+      "username": "Username",
+      "email": "Email",
+      "birthdate": "Date of Birth",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "usernameplaceholder": "Choose a username",
+      "emailplaceholder": "Enter your email",
+      "birthdateplaceholder": "Select your date of birth",
+      "passwordplaceholder": "Create a password (min 6 characters)",
+      "confirmpasswordplaceholder": "Confirm your password",
+      "button": "Create Account",
+      "creating": "Creating account...",
+      "login": "Login here",
+      "haveAccount": "Already have an account?"
+    },
+    "messages": {
+      "passwordMismatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "loginSuccess": "Login successful!",
+      "registerSuccess": "Registration successful!",
+      "loginError": "Login failed. Please try again.",
+      "registerError": "Registration failed. Please try again."
+    }
+  },
   "footer": {
     "about": {
       "title": "About",

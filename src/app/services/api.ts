@@ -29,18 +29,19 @@ export class ApiService {
     let errorMessage = 'Une erreur est survenue';
     
     if (error.error instanceof ErrorEvent) {
-      // Erreur côté client
       errorMessage = `Erreur: ${error.error.message}`;
     } else {
-      // Erreur côté serveur
-      errorMessage = `Code: ${error.status}\nMessage: ${error.message}`;
-      
       if (error.error?.message) {
         errorMessage = error.error.message;
+      } else if (error.status) {
+        errorMessage = `Code: ${error.status} - ${error.statusText || 'Erreur serveur'}`;
       }
     }
     
-    console.error(errorMessage);
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => ({ 
+      status: error.status,
+      message: errorMessage,
+      error: error.error
+    }));
   }
 }

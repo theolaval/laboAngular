@@ -1,11 +1,8 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <!-- Logo -->
     <a routerLink="/" class="navbar-brand">
       <span class="logo">AmaZoun</span>
     </a>
-
-    <!-- Search Bar -->
     <div class="search-bar">
       <input
         type="text"
@@ -28,7 +25,6 @@
       </button>
     </div>
 
-    <!-- Desktop Navigation -->
     <ul class="nav-links">
       <li>
         <a routerLink="/products">{{ 'navbar.products' | translate }}</a>
@@ -58,7 +54,7 @@
         </a>
       </li>
       <li>
-        <a routerLink="/account" class="account-link">
+        <a routerLink="/accounts" class="account-link">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -125,7 +121,6 @@
       </li>
     </ul>
 
-    <!-- Mobile Menu Toggle -->
     <button class="mobile-toggle" (click)="toggleMenu()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -143,13 +138,12 @@
     </button>
   </div>
 
-  <!-- Mobile Menu -->
   <div class="mobile-menu" [class.open]="isMenuOpen">
     <a routerLink="/products" (click)="toggleMenu()">{{ 'navbar.products' | translate }}</a>
     <a routerLink="/deals" (click)="toggleMenu()">{{ 'navbar.deals' | translate }}</a>
     <a routerLink="/categories" (click)="toggleMenu()">{{ 'navbar.categories' | translate }}</a>
     <a routerLink="/cart" (click)="toggleMenu()">{{ 'navbar.cart' | translate }}</a>
-    <a routerLink="/account" (click)="toggleMenu()">{{ 'navbar.account' | translate }}</a>
+    <a routerLink="/accounts" (click)="toggleMenu()">{{ 'navbar.account' | translate }}</a>
     <div class="mobile-language-selector">
       <button class="lang-btn-single" (click)="toggleLanguageMenu()">
         <svg

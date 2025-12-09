@@ -46,6 +46,55 @@
     "account": "Compte",
     "language": "Langue"
   },
+  "accounts": {
+    "profile": {
+      "title": "'s Profile",
+      "role": "Rôle",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "birthdate": "Date de naissance",
+      "userId": "ID utilisateur",
+      "logout": "Déconnexion"
+    },
+    "login": {
+      "title": "Connexion",
+      "subtitle": "Bienvenue ! Veuillez vous connecter à votre compte",
+      "username": "Nom d'utilisateur",
+      "password": "Mot de passe",
+      "usernameplaceholder": "Entrez votre nom d'utilisateur",
+      "passwordplaceholder": "Entrez votre mot de passe",
+      "button": "Connexion",
+      "logging": "Connexion en cours...",
+      "register": "Inscrivez-vous ici",
+      "noAccount": "Vous n'avez pas de compte ?"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "subtitle": "Rejoignez-nous aujourd'hui et commencez à faire vos achats",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "birthdate": "Date de naissance",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "usernameplaceholder": "Choisissez un nom d'utilisateur",
+      "emailplaceholder": "Entrez votre email",
+      "birthdateplaceholder": "Sélectionnez votre date de naissance",
+      "passwordplaceholder": "Créez un mot de passe (min 6 caractères)",
+      "confirmpasswordplaceholder": "Confirmez votre mot de passe",
+      "button": "Créer un compte",
+      "creating": "Création du compte...",
+      "login": "Connectez-vous ici",
+      "haveAccount": "Vous avez déjà un compte ?"
+    },
+    "messages": {
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+      "loginSuccess": "Connexion réussie !",
+      "registerSuccess": "Inscription réussie !",
+      "loginError": "Connexion échouée. Veuillez réessayer.",
+      "registerError": "L'inscription a échouée. Veuillez réessayer."
+    }
+  },
   "footer": {
     "about": {
       "title": "À propos",
