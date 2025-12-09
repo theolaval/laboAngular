@@ -5,7 +5,6 @@
   </div>
 
   @if (cartItems().length === 0) {
-    <!-- Panier vide -->
     <div class="empty-cart">
       <div class="empty-cart-icon">🛒</div>
       <h2>{{ 'cart.empty.title' | translate }}</h2>
@@ -15,9 +14,7 @@
       </a>
     </div>
   } @else {
-    <!-- Panier avec produits -->
     <div class="cart-content">
-      <!-- Liste des produits -->
       <div class="cart-items">
         <div class="cart-items-header">
           <h2>{{ 'cart.items.title' | translate }} ({{ itemCount() }})</h2>
@@ -95,7 +92,6 @@
         }
       </div>
 
-      <!-- Résumé de la commande -->
       <div class="cart-summary">
         <div class="summary-card">
           <h2>{{ 'cart.summary.title' | translate }}</h2>

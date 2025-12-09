@@ -24,12 +24,17 @@ export class AuthService extends ApiService {
   private getUserFromStorage(): User | null {
     try {
       const userJson = localStorage.getItem('user');
-      if (userJson && userJson !== 'undefined') {
+      if (userJson && userJson !== 'undefined' && userJson !== 'null') {
         const user = JSON.parse(userJson);
-        return user;
+        
+        // Vérifier que l'utilisateur a au moins un username et un id
+        if (user && (user.username || user.id)) {
+          return user;
+        }
       }
       return null;
     } catch (error) {
+      console.error('Error loading user from storage:', error);
       localStorage.removeItem('user');
       return null;
     }
@@ -69,56 +74,124 @@ export class AuthService extends ApiService {
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.endpoint}/login`, credentials)
+    return this.http.post<any>(`${this.endpoint}/login`, credentials)
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
+          console.log('Login response:', response);
+          console.log('Response type:', typeof response);
+          console.log('Response keys:', Object.keys(response || {}));
           
-          if (response.user && response.user.username) {
-            localStorage.setItem('user', JSON.stringify(response.user));
-            this.currentUserSubject.next(response.user);
+          // Sauvegarder le token (essayer différentes variantes)
+          const token = response?.token || response?.Token || response?.access_token;
+          if (token) {
+            localStorage.setItem('token', token);
+            console.log('Token saved');
           } else {
-            this.getCurrentUserFromBackend().subscribe({
-              next: (userResponse) => {
-              },
-              error: (error) => {
-                const user = this.decodeToken(response.token);
-                if (user) {
-                  localStorage.setItem('user', JSON.stringify(user));
-                  this.currentUserSubject.next(user);
+            console.warn('No token in login response');
+          }
+          
+          // Essayer de récupérer l'utilisateur depuis la réponse (différentes variantes)
+          const user = response?.user || response?.User || response?.data?.user;
+          
+          if (user && user.username) {
+            localStorage.setItem('user', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            console.log('User saved from login response:', user);
+          } else if (token) {
+            console.log('No user in response, trying to decode token');
+            // Si pas d'utilisateur dans la réponse, essayer de décoder le token
+            const decodedUser = this.decodeToken(token);
+            console.log('Decoded user:', decodedUser);
+            
+            if (decodedUser && decodedUser.username) {
+              localStorage.setItem('user', JSON.stringify(decodedUser));
+              this.currentUserSubject.next(decodedUser);
+              console.log('User saved from decoded token');
+            } else {
+              console.log('Failed to decode user, fetching from backend');
+              // En dernier recours, récupérer l'utilisateur depuis le backend
+              this.getCurrentUserFromBackend().subscribe({
+                next: (userResponse) => {
+                  if (userResponse.user) {
+                    localStorage.setItem('user', JSON.stringify(userResponse.user));
+                    this.currentUserSubject.next(userResponse.user);
+                    console.log('User fetched from backend:', userResponse.user);
+                  }
+                },
+                error: (error) => {
+                  console.error('Erreur lors de la récupération de l\'utilisateur:', error);
                 }
-              }
-            });
+              });
+            }
+          } else {
+            console.error('Invalid login response format:', response);
           }
         }),
-        catchError(error => this.handleError(error))
+        catchError(error => {
+          console.error('Login error in service:', error);
+          return this.handleError(error);
+        })
       );
   }
 
   register(userData: RegisterRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.endpoint}/register`, userData)
+    return this.http.post<any>(`${this.endpoint}/register`, userData)
       .pipe(
         tap(response => {
-          localStorage.setItem('token', response.token);
+          console.log('Register response:', response);
+          console.log('Response type:', typeof response);
+          console.log('Response keys:', Object.keys(response || {}));
           
-          if (response.user && response.user.username) {
-            localStorage.setItem('user', JSON.stringify(response.user));
-            this.currentUserSubject.next(response.user);
+          // Sauvegarder le token (essayer différentes variantes)
+          const token = response?.token || response?.Token || response?.access_token;
+          if (token) {
+            localStorage.setItem('token', token);
+            console.log('Token saved');
           } else {
-            this.getCurrentUserFromBackend().subscribe({
-              next: (userResponse) => {
-              },
-              error: (error) => {
-                const user = this.decodeToken(response.token);
-                if (user) {
-                  localStorage.setItem('user', JSON.stringify(user));
-                  this.currentUserSubject.next(user);
+            console.warn('No token in response');
+          }
+          
+          // Essayer de récupérer l'utilisateur depuis la réponse (différentes variantes)
+          const user = response?.user || response?.User || response?.data?.user;
+          
+          if (user && user.username) {
+            localStorage.setItem('user', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            console.log('User saved from response:', user);
+          } else if (token) {
+            console.log('No user in response, trying to decode token');
+            // Si pas d'utilisateur dans la réponse, essayer de décoder le token
+            const decodedUser = this.decodeToken(token);
+            console.log('Decoded user:', decodedUser);
+            
+            if (decodedUser && decodedUser.username) {
+              localStorage.setItem('user', JSON.stringify(decodedUser));
+              this.currentUserSubject.next(decodedUser);
+              console.log('User saved from decoded token');
+            } else {
+              console.log('Failed to decode user, fetching from backend');
+              // En dernier recours, récupérer l'utilisateur depuis le backend
+              this.getCurrentUserFromBackend().subscribe({
+                next: (userResponse) => {
+                  if (userResponse.user) {
+                    localStorage.setItem('user', JSON.stringify(userResponse.user));
+                    this.currentUserSubject.next(userResponse.user);
+                    console.log('User fetched from backend:', userResponse.user);
+                  }
+                },
+                error: (error) => {
+                  console.error('Erreur lors de la récupération de l\'utilisateur:', error);
                 }
-              }
-            });
+              });
+            }
+          } else {
+            console.error('Invalid response format:', response);
           }
         }),
-        catchError(error => this.handleError(error))
+        catchError(error => {
+          console.error('Register error in service:', error);
+          return this.handleError(error);
+        })
       );
   }
 

@@ -3,7 +3,11 @@ import { catchError, throwError, retry } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
-    retry(1),
+    // Ne pas retry pour les requêtes d'authentification
+    retry({
+      count: req.url.includes('/auth/') ? 0 : 1,
+      delay: 1000
+    }),
     catchError((error: HttpErrorResponse) => {
       let errorMessage = '';
 
@@ -17,7 +21,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion.';
             break;
           case 400:
-            errorMessage = error.error?.message || 'Requête invalide';
+            errorMessage = error.error?.message || error.error?.title || 'Requête invalide';
+            break;
+          case 401:
+            errorMessage = 'Non autorisé. Veuillez vous connecter.';
             break;
           case 404:
             errorMessage = 'Ressource non trouvée';
