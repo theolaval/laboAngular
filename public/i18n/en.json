@@ -95,6 +95,51 @@
       "registerError": "Registration failed. Please try again."
     }
   },
+  "deals": {
+    "title": "Special Deals",
+    "subtitle": "Discover our best offers and promotions",
+    "comingSoon": "Coming Soon!",
+    "comingSoonText": "Our amazing deals page is under construction. Stay tuned for exclusive offers!"
+  },
+  "categories": {
+    "title": "Browse Categories",
+    "subtitle": "Explore all product categories",
+    "comingSoon": "Coming Soon!",
+    "comingSoonText": "Our categories page is being prepared. Soon you'll be able to browse all our product categories!"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "subtitle": "Review your items and proceed to checkout",
+    "empty": {
+      "title": "Your cart is empty",
+      "message": "Start adding products to your cart and they will appear here",
+      "continueShopping": "Start Shopping"
+    },
+    "items": {
+      "title": "Your Items",
+      "clearCart": "Clear Cart",
+      "quantity": "Quantity",
+      "price": "Price",
+      "total": "Total",
+      "remove": "Remove",
+      "lowStock": "Low stock",
+      "remaining": "remaining",
+      "outOfStock": "Out of stock"
+    },
+    "summary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "free": "FREE",
+      "total": "Total",
+      "item": "item",
+      "items": "items",
+      "freeShippingMessage": "Add {amount} more to get FREE shipping!",
+      "checkout": "Proceed to Checkout",
+      "continueShopping": "Continue Shopping",
+      "acceptedPayments": "We accept"
+    }
+  },
   "footer": {
     "about": {
       "title": "About",

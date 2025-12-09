@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/" class="navbar-brand">
+    <a routerLink="/" class="navbar-brand" (click)="navigateTo('/', $event)">
       <span class="logo">AmaZoun</span>
     </a>
     <div class="search-bar">
@@ -27,46 +27,35 @@
 
     <ul class="nav-links">
       <li>
-        <a routerLink="/products">{{ 'navbar.products' | translate }}</a>
-      </li>
-      <li>
-        <a routerLink="/deals">{{ 'navbar.deals' | translate }}</a>
-      </li>
-      <li>
-        <a routerLink="/categories">{{ 'navbar.categories' | translate }}</a>
-      </li>
-      <li>
-        <a routerLink="/cart" class="cart-link">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span class="cart-text">{{ 'navbar.cart' | translate }}</span>
+        <a routerLink="/" (click)="navigateTo('/', $event)">
+          <span class="nav-emoji">📦</span>
+          {{ 'navbar.products' | translate }}
         </a>
       </li>
       <li>
-        <a routerLink="/accounts" class="account-link">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+        <a routerLink="/deals" (click)="navigateTo('/deals', $event)">
+          <span class="nav-emoji">🔥</span>
+          {{ 'navbar.deals' | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/categories" (click)="navigateTo('/categories', $event)">
+          <span class="nav-emoji">📂</span>
+          {{ 'navbar.categories' | translate }}
+        </a>
+      </li>
+      <li>
+        <a routerLink="/cart" class="cart-link" (click)="navigateTo('/cart', $event)">
+          <span class="nav-emoji">🛒</span>
+          <span class="cart-text">{{ 'navbar.cart' | translate }}</span>
+          @if (cartItemCount() > 0) {
+            <span class="cart-count">{{ cartItemCount() }}</span>
+          }
+        </a>
+      </li>
+      <li>
+        <a routerLink="/accounts" class="account-link" (click)="navigateTo('/accounts', $event)">
+          <span class="nav-emoji">👤</span>
           <span>{{ 'navbar.account' | translate }}</span>
         </a>
       </li>
@@ -108,6 +97,7 @@
             [class.active]="currentLanguage === 'en'"
             (click)="changeLanguage('en')"
           >
+            <span class="flag">🇬🇧</span>
             <span>English</span>
           </button>
           <button
@@ -115,6 +105,7 @@
             [class.active]="currentLanguage === 'fr'"
             (click)="changeLanguage('fr')"
           >
+            <span class="flag">🇫🇷</span>
             <span>Français</span>
           </button>
         </div>
@@ -139,11 +130,29 @@
   </div>
 
   <div class="mobile-menu" [class.open]="isMenuOpen">
-    <a routerLink="/products" (click)="toggleMenu()">{{ 'navbar.products' | translate }}</a>
-    <a routerLink="/deals" (click)="toggleMenu()">{{ 'navbar.deals' | translate }}</a>
-    <a routerLink="/categories" (click)="toggleMenu()">{{ 'navbar.categories' | translate }}</a>
-    <a routerLink="/cart" (click)="toggleMenu()">{{ 'navbar.cart' | translate }}</a>
-    <a routerLink="/accounts" (click)="toggleMenu()">{{ 'navbar.account' | translate }}</a>
+    <a routerLink="/" (click)="toggleMenu()">
+      <span class="nav-emoji">📦</span>
+      {{ 'navbar.products' | translate }}
+    </a>
+    <a routerLink="/deals" (click)="toggleMenu()">
+      <span class="nav-emoji">🔥</span>
+      {{ 'navbar.deals' | translate }}
+    </a>
+    <a routerLink="/categories" (click)="toggleMenu()">
+      <span class="nav-emoji">📂</span>
+      {{ 'navbar.categories' | translate }}
+    </a>
+    <a routerLink="/cart" (click)="toggleMenu()">
+      <span class="nav-emoji">🛒</span>
+      {{ 'navbar.cart' | translate }}
+      @if (cartItemCount() > 0) {
+        <span class="cart-count">{{ cartItemCount() }}</span>
+      }
+    </a>
+    <a routerLink="/accounts" (click)="toggleMenu()">
+      <span class="nav-emoji">👤</span>
+      {{ 'navbar.account' | translate }}
+    </a>
     <div class="mobile-language-selector">
       <button class="lang-btn-single" (click)="toggleLanguageMenu()">
         <svg
@@ -182,6 +191,7 @@
           [class.active]="currentLanguage === 'en'"
           (click)="changeLanguage('en')"
         >
+          <span class="flag">🇬🇧</span>
           <span>English</span>
         </button>
         <button
@@ -189,6 +199,7 @@
           [class.active]="currentLanguage === 'fr'"
           (click)="changeLanguage('fr')"
         >
+          <span class="flag">🇫🇷</span>
           <span>Français</span>
         </button>
       </div>

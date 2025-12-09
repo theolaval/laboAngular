@@ -1,0 +1,152 @@
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>🛒 {{ 'cart.title' | translate }}</h1>
+    <p class="cart-subtitle">{{ 'cart.subtitle' | translate }}</p>
+  </div>
+
+  @if (cartItems().length === 0) {
+    <!-- Panier vide -->
+    <div class="empty-cart">
+      <div class="empty-cart-icon">🛒</div>
+      <h2>{{ 'cart.empty.title' | translate }}</h2>
+      <p>{{ 'cart.empty.message' | translate }}</p>
+      <a routerLink="/" class="btn btn-primary">
+        {{ 'cart.empty.continueShopping' | translate }}
+      </a>
+    </div>
+  } @else {
+    <!-- Panier avec produits -->
+    <div class="cart-content">
+      <!-- Liste des produits -->
+      <div class="cart-items">
+        <div class="cart-items-header">
+          <h2>{{ 'cart.items.title' | translate }} ({{ itemCount() }})</h2>
+          <button class="btn-text" (click)="clearCart()">
+            {{ 'cart.items.clearCart' | translate }}
+          </button>
+        </div>
+
+        @for (item of cartItems(); track item.product.id) {
+          <div class="cart-item">
+            <div class="item-image">
+              @if (item.product.imageUrl) {
+                <img [src]="item.product.imageUrl" [alt]="item.product.name">
+              } @else {
+                <div class="image-placeholder">📦</div>
+              }
+            </div>
+
+            <div class="item-details">
+              <h3 class="item-name">{{ item.product.name }}</h3>
+              <p class="item-description">{{ item.product.description }}</p>
+              
+              @if (item.product.stock <= 5 && item.product.stock > 0) {
+                <span class="stock-warning">
+                  ⚠️ {{ 'cart.items.lowStock' | translate }}: {{ item.product.stock }} {{ 'cart.items.remaining' | translate }}
+                </span>
+              }
+              @if (item.product.stock === 0) {
+                <span class="stock-out">
+                  ❌ {{ 'cart.items.outOfStock' | translate }}
+                </span>
+              }
+            </div>
+
+            <div class="item-quantity">
+              <label>{{ 'cart.items.quantity' | translate }}:</label>
+              <div class="quantity-controls">
+                <button 
+                  class="qty-btn"
+                  (click)="updateQuantity(item.product.id, item.quantity - 1)"
+                  [disabled]="item.quantity <= 1">
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  [value]="item.quantity"
+                  (change)="updateQuantity(item.product.id, +$any($event.target).value)"
+                  min="1"
+                  [max]="item.product.stock"
+                  class="qty-input">
+                <button 
+                  class="qty-btn"
+                  (click)="updateQuantity(item.product.id, item.quantity + 1)"
+                  [disabled]="item.quantity >= item.product.stock">
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="item-price">
+              <p class="price-label">{{ 'cart.items.price' | translate }}:</p>
+              <p class="price-value">{{ item.product.price | currency: 'EUR' }}</p>
+              @if (item.quantity > 1) {
+                <p class="price-total">{{ 'cart.items.total' | translate }}: {{ (item.product.price * item.quantity) | currency: 'EUR' }}</p>
+              }
+            </div>
+
+            <button 
+              class="btn-remove"
+              (click)="removeItem(item.product.id)"
+              [title]="'cart.items.remove' | translate">
+              🗑️
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- Résumé de la commande -->
+      <div class="cart-summary">
+        <div class="summary-card">
+          <h2>{{ 'cart.summary.title' | translate }}</h2>
+          
+          <div class="summary-line">
+            <span>{{ 'cart.summary.subtotal' | translate }} ({{ itemCount() }} {{ itemCount() > 1 ? ('cart.summary.items' | translate) : ('cart.summary.item' | translate) }}):</span>
+            <span class="summary-value">{{ totalPrice() | currency: 'EUR' }}</span>
+          </div>
+
+          <div class="summary-line">
+            <span>{{ 'cart.summary.shipping' | translate }}:</span>
+            @if (shippingCost() === 0 && totalPrice() > 0) {
+              <span class="summary-value free">{{ 'cart.summary.free' | translate }}</span>
+            } @else {
+              <span class="summary-value">{{ shippingCost() | currency: 'EUR' }}</span>
+            }
+          </div>
+
+          @if (totalPrice() < 50 && totalPrice() > 0) {
+            <div class="free-shipping-banner">
+              <p>
+                🚚 {{ 'cart.summary.freeShippingMessage' | translate: {amount: (50 - totalPrice()) | currency: 'EUR'} }}
+              </p>
+            </div>
+          }
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-line summary-total">
+            <span>{{ 'cart.summary.total' | translate }}:</span>
+            <span class="summary-value">{{ finalTotal() | currency: 'EUR' }}</span>
+          </div>
+
+          <button class="btn btn-checkout" (click)="checkout()">
+            {{ 'cart.summary.checkout' | translate }}
+          </button>
+
+          <a routerLink="/" class="btn btn-secondary">
+            {{ 'cart.summary.continueShopping' | translate }}
+          </a>
+
+          <div class="payment-methods">
+            <p>{{ 'cart.summary.acceptedPayments' | translate }}:</p>
+            <div class="payment-icons">
+              <span>💳</span>
+              <span>🏦</span>
+              <span>💰</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -3,10 +3,12 @@
   color: white;
   padding: 80px 20px;
   text-align: center;
+  animation: fadeIn 0.6s ease-out;
 
   .hero-content {
     max-width: 800px;
     margin: 0 auto;
+    animation: slideInUp 0.8s ease-out;
 
     h1 {
       font-size: 3rem;
@@ -42,12 +44,14 @@
 .categories-section {
   padding: 60px 20px;
   background: #f8f9fa;
+  animation: fadeIn 0.8s ease-out 0.2s backwards;
 
   h2 {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 40px;
     color: #2c3e50;
+    animation: slideInUp 0.6s ease-out 0.3s backwards;
   }
 
   .categories-grid {
@@ -56,6 +60,7 @@
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    animation: fadeIn 0.8s ease-out 0.4s backwards;
 
     .category-card {
       background: white;
@@ -65,6 +70,13 @@
       cursor: pointer;
       transition: all 0.3s;
       text-align: center;
+      animation: scaleIn 0.5s ease-out backwards;
+
+      @for $i from 1 through 6 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.5 + ($i * 0.1)}s;
+        }
+      }
 
       .category-icon {
         font-size: 3rem;
@@ -107,6 +119,7 @@
 
 .products-section {
   padding: 60px 20px;
+  animation: fadeIn 0.8s ease-out 0.5s backwards;
 
   .container {
     max-width: 1400px;
@@ -161,6 +174,13 @@
       overflow: hidden;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       transition: all 0.3s;
+      animation: fadeInUp 0.6s ease-out backwards;
+
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.6 + ($i * 0.05)}s;
+        }
+      }
 
       &:hover {
         transform: translateY(-5px);
@@ -312,6 +332,48 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 768px) {

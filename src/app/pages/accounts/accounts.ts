@@ -91,10 +91,11 @@ export class Accounts implements OnInit, OnDestroy {
     this.authService.login(loginRequest).subscribe({
       next: (response) => {
         this.isLoading.set(false);
-        this.currentUser.set(response.user);
-        this.isLoggedIn.set(true);
         this.translateService.get('accounts.messages.loginSuccess').subscribe(message => {
           this.successMessage.set(message);
+          setTimeout(() => {
+            this.successMessage.set('');
+          }, 5000);
         });
         this.resetLoginForm();
       },
@@ -135,11 +136,12 @@ export class Accounts implements OnInit, OnDestroy {
     this.authService.register(registerRequest).subscribe({
       next: (response) => {
         this.isLoading.set(false);
-        this.currentUser.set(response.user);
-        this.isLoggedIn.set(true);
         this.showRegister.set(false);
         this.translateService.get('accounts.messages.registerSuccess').subscribe(message => {
           this.successMessage.set(message);
+          setTimeout(() => {
+            this.successMessage.set('');
+          }, 5000);
         });
         this.resetRegisterForm();
       },
@@ -159,8 +161,8 @@ export class Accounts implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
-    this.isLoggedIn.set(false);
-    this.currentUser.set(null);
+    this.errorMessage.set('');
+    this.successMessage.set('');
     this.resetLoginForm();
   }
 

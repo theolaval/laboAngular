@@ -2,8 +2,9 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core'; 
+import { TranslateModule, TranslateService } from '@ngx-translate/core'; 
 import { environment } from '../../../environments/environment';
+import { CartService } from '../../services/cart';
 
 interface Product {
   id: number;
@@ -31,6 +32,8 @@ interface Category {
 export class HomeComponent implements OnInit {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private cartService = inject(CartService);
+  private translateService = inject(TranslateService);
 
   products = signal<Product[]>([]);
   categories = signal<Category[]>([]);
@@ -58,9 +61,19 @@ export class HomeComponent implements OnInit {
 
   addToCart(product: Product) {
     if (product.stock > 0) {
-      alert(`${product.name} ajouté au panier !`);
+      this.cartService.addToCart(product);
+      
+      // Afficher un message de confirmation
+      this.translateService.get('home.products.addedToCart', { productName: product.name })
+        .subscribe(message => {
+          // Vous pouvez implémenter un toast/notification ici
+          console.log(message || `${product.name} ajouté au panier !`);
+        });
     } else {
-      alert('Produit en rupture de stock');
+      this.translateService.get('home.products.outOfStockMessage')
+        .subscribe(message => {
+          alert(message || 'Produit en rupture de stock');
+        });
     }
   }
 

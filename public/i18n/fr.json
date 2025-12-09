@@ -95,6 +95,51 @@
       "registerError": "L'inscription a échouée. Veuillez réessayer."
     }
   },
+  "deals": {
+    "title": "Promotions Spéciales",
+    "subtitle": "Découvrez nos meilleures offres et promotions",
+    "comingSoon": "Bientôt disponible !",
+    "comingSoonText": "Notre page de promotions est en construction. Restez à l'écoute pour des offres exclusives !"
+  },
+  "categories": {
+    "title": "Parcourir les Catégories",
+    "subtitle": "Explorez toutes les catégories de produits",
+    "comingSoon": "Bientôt disponible !",
+    "comingSoonText": "Notre page de catégories est en préparation. Bientôt vous pourrez parcourir toutes nos catégories de produits !"
+  },
+  "cart": {
+    "title": "Panier d'achat",
+    "subtitle": "Vérifiez vos articles et procédez au paiement",
+    "empty": {
+      "title": "Votre panier est vide",
+      "message": "Commencez à ajouter des produits à votre panier et ils apparaîtront ici",
+      "continueShopping": "Commencer mes achats"
+    },
+    "items": {
+      "title": "Vos articles",
+      "clearCart": "Vider le panier",
+      "quantity": "Quantité",
+      "price": "Prix",
+      "total": "Total",
+      "remove": "Retirer",
+      "lowStock": "Stock faible",
+      "remaining": "restants",
+      "outOfStock": "Rupture de stock"
+    },
+    "summary": {
+      "title": "Récapitulatif de la commande",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "free": "GRATUITE",
+      "total": "Total",
+      "item": "article",
+      "items": "articles",
+      "freeShippingMessage": "Ajoutez {amount} de plus pour bénéficier de la livraison GRATUITE !",
+      "checkout": "Procéder au paiement",
+      "continueShopping": "Continuer mes achats",
+      "acceptedPayments": "Nous acceptons"
+    }
+  },
   "footer": {
     "about": {
       "title": "À propos",

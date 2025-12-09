@@ -74,15 +74,21 @@ export class AuthService extends ApiService {
         tap(response => {
           localStorage.setItem('token', response.token);
           
-          if (response.user) {
+          if (response.user && response.user.username) {
             localStorage.setItem('user', JSON.stringify(response.user));
             this.currentUserSubject.next(response.user);
           } else {
-            const user = this.decodeToken(response.token);
-            if (user) {
-              localStorage.setItem('user', JSON.stringify(user));
-              this.currentUserSubject.next(user);
-            }
+            this.getCurrentUserFromBackend().subscribe({
+              next: (userResponse) => {
+              },
+              error: (error) => {
+                const user = this.decodeToken(response.token);
+                if (user) {
+                  localStorage.setItem('user', JSON.stringify(user));
+                  this.currentUserSubject.next(user);
+                }
+              }
+            });
           }
         }),
         catchError(error => this.handleError(error))
@@ -95,15 +101,21 @@ export class AuthService extends ApiService {
         tap(response => {
           localStorage.setItem('token', response.token);
           
-          if (response.user) {
+          if (response.user && response.user.username) {
             localStorage.setItem('user', JSON.stringify(response.user));
             this.currentUserSubject.next(response.user);
           } else {
-            const user = this.decodeToken(response.token);
-            if (user) {
-              localStorage.setItem('user', JSON.stringify(user));
-              this.currentUserSubject.next(user);
-            }
+            this.getCurrentUserFromBackend().subscribe({
+              next: (userResponse) => {
+              },
+              error: (error) => {
+                const user = this.decodeToken(response.token);
+                if (user) {
+                  localStorage.setItem('user', JSON.stringify(user));
+                  this.currentUserSubject.next(user);
+                }
+              }
+            });
           }
         }),
         catchError(error => this.handleError(error))
@@ -114,7 +126,7 @@ export class AuthService extends ApiService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/accounts']);
   }
 
   getCurrentUserFromBackend(): Observable<LoginResponse> {

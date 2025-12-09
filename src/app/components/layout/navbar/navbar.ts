@@ -1,8 +1,10 @@
 import { Component, inject, HostListener } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Accounts } from '../../../pages/accounts/accounts';
+import { filter } from 'rxjs/operators';
+import { CartService } from '../../../services/cart';
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +17,31 @@ export class NavbarComponent {
   isMenuOpen = false;
   isLanguageMenuOpen = false;
   currentLanguage = 'en';
+  currentRoute = '';
   private translateService = inject(TranslateService);
+  private router = inject(Router);
+  private cartService = inject(CartService);
+
+  cartItemCount = this.cartService.itemCount;
 
   constructor() {
-    this.currentLanguage = this.translateService.currentLang || 'en';
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    this.currentLanguage = savedLanguage || this.translateService.currentLang || 'en';
+    
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.currentRoute = event.urlAfterRedirects;
+    });
+    
+    this.currentRoute = this.router.url;
+  }
+
+  navigateTo(path: string, event: Event) {
+    if (this.currentRoute === path) {
+      event.preventDefault();
+      window.location.href = path;
+    }
   }
 
   toggleMenu() {
