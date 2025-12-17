@@ -174,5 +174,56 @@
       "terms": "Terms",
       "cookies": "Cookies"
     }
+  },
+  "admin": {
+    "title": "Product Management",
+    "createButton": "Create a product",
+    "cancelButton": "Cancel",
+    "messages": {
+      "createSuccess": "Product created successfully!",
+      "deleteSuccess": "Product deleted successfully!",
+      "createError": "Error creating product",
+      "deleteError": "Error deleting product",
+      "loadError": "Error loading products"
+    },
+    "form": {
+      "title": "Create a new product",
+      "name": "Product name",
+      "namePlaceholder": "e.g. iPhone 15 Pro",
+      "nameError": "Name must be between 3 and 100 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Detailed product description (minimum 10 characters)",
+      "descriptionError": "Description must be between 10 and 500 characters",
+      "price": "Price",
+      "pricePlaceholder": "0.00",
+      "priceError": "Price must be positive",
+      "stock": "Stock",
+      "stockPlaceholder": "0",
+      "stockError": "Stock must be positive",
+      "discount": "Discount (%)",
+      "discountPlaceholder": "0",
+      "discountError": "Discount must be between 0 and 100",
+      "submitButton": "Create product",
+      "submitting": "Creating...",
+      "required": "*"
+    },
+    "list": {
+      "title": "Product list",
+      "loading": "Loading products...",
+      "empty": "No products found",
+      "columns": {
+        "id": "ID",
+        "image": "Image",
+        "name": "Name",
+        "description": "Description",
+        "price": "Price",
+        "stock": "Stock",
+        "discount": "Discount",
+        "actions": "Actions"
+      },
+      "deleteButton": "Delete",
+      "deleteConfirm": "Are you sure you want to delete the product \"{name}\"?",
+      "noImage": "No image"
+    }
   }
 }

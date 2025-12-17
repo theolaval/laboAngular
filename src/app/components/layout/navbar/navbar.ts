@@ -1,10 +1,11 @@
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, signal, OnInit } from '@angular/core';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Accounts } from '../../../pages/accounts/accounts';
 import { filter } from 'rxjs/operators';
 import { CartService } from '../../../services/cart';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ import { CartService } from '../../../services/cart';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isMenuOpen = false;
   isLanguageMenuOpen = false;
   currentLanguage = 'en';
@@ -21,8 +22,10 @@ export class NavbarComponent {
   private translateService = inject(TranslateService);
   private router = inject(Router);
   private cartService = inject(CartService);
+  private authService = inject(AuthService);
 
   cartItemCount = this.cartService.itemCount;
+  isAdmin = signal<boolean>(false);
 
   constructor() {
     const savedLanguage = localStorage.getItem('selectedLanguage');
@@ -35,6 +38,13 @@ export class NavbarComponent {
     });
     
     this.currentRoute = this.router.url;
+  }
+
+  ngOnInit() {
+    // Vérifier si l'utilisateur est admin
+    this.authService.currentUser$.subscribe(user => {
+      this.isAdmin.set(user?.role === 'Admin');
+    });
   }
 
   navigateTo(path: string, event: Event) {

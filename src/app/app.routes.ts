@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -8,6 +9,11 @@ export const routes: Routes = [
   {
     path: 'accounts',
     loadComponent: () => import('./pages/accounts/accounts').then((m) => m.Accounts),
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./pages/admin/admin').then((m) => m.AdminComponent),
+    canActivate: [adminGuard]
   },
   {
     path: 'deals',

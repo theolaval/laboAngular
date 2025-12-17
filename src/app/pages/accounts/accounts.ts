@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { User, LoginRequest, RegisterRequest } from '../../models/user';
@@ -10,13 +10,14 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './accounts.html',
   styleUrl: './accounts.scss',
 })
 export class Accounts implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private translateService = inject(TranslateService);
+  private fb = inject(FormBuilder);
   private destroy$ = new Subject<void>();
 
   isLoggedIn = signal<boolean>(false);
@@ -26,18 +27,24 @@ export class Accounts implements OnInit, OnDestroy {
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
 
-  loginForm = signal({
-    username: '',
-    password: ''
-  });
+  loginForm: FormGroup;
+  registerForm: FormGroup;
 
-  registerForm = signal({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthdate: ''
-  });
+  constructor() {
+    // Initialiser les formulaires avec validation
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    this.registerForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+      birthdate: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit() {
     this.authService.currentUser$.pipe(
@@ -75,12 +82,16 @@ export class Accounts implements OnInit, OnDestroy {
   }
 
   onLogin() {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
     this.errorMessage.set('');
     this.isLoading.set(true);
 
     const loginRequest: LoginRequest = {
-      username: this.loginForm().username,
-      password: this.loginForm().password
+      username: this.loginForm.value.username,
+      password: this.loginForm.value.password
     };
 
     this.authService.login(loginRequest).subscribe({
@@ -111,17 +122,14 @@ export class Accounts implements OnInit, OnDestroy {
   }
 
   onRegister() {
-    this.errorMessage.set('');
-
-    if (this.registerForm().password !== this.registerForm().confirmPassword) {
-      this.translateService.get('accounts.messages.passwordMismatch').subscribe(message => {
-        this.errorMessage.set(message);
-      });
+    if (this.registerForm.invalid) {
       return;
     }
 
-    if (this.registerForm().password.length < 6) {
-      this.translateService.get('accounts.messages.passwordTooShort').subscribe(message => {
+    this.errorMessage.set('');
+
+    if (this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+      this.translateService.get('accounts.messages.passwordMismatch').subscribe(message => {
         this.errorMessage.set(message);
       });
       return;
@@ -130,10 +138,10 @@ export class Accounts implements OnInit, OnDestroy {
     this.isLoading.set(true);
 
     const registerRequest: RegisterRequest = {
-      username: this.registerForm().username,
-      email: this.registerForm().email,
-      password: this.registerForm().password,
-      birthdate: this.registerForm().birthdate
+      username: this.registerForm.value.username,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
+      birthdate: this.registerForm.value.birthdate
     };
 
     this.authService.register(registerRequest).subscribe({
@@ -211,27 +219,19 @@ export class Accounts implements OnInit, OnDestroy {
   }
 
   resetLoginForm() {
-    this.loginForm.set({
+    this.loginForm.reset({
       username: '',
       password: ''
     });
   }
 
   resetRegisterForm() {
-    this.registerForm.set({
+    this.registerForm.reset({
       username: '',
       email: '',
       password: '',
       confirmPassword: '',
       birthdate: ''
     });
-  }
-
-  updateLoginForm(field: string, value: string) {
-    this.loginForm.update(form => ({ ...form, [field]: value }));
-  }
-
-  updateRegisterForm(field: string, value: string) {
-    this.registerForm.update(form => ({ ...form, [field]: value }));
   }
 }

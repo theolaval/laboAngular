@@ -4,7 +4,8 @@ export interface Product {
   description: string;
   price: number;
   stock: number;
-  categoryId: number;
+  discount: number;
+  categoryId?: number;
   category?: Category;
   imageUrl?: string;
   createdAt?: Date;
@@ -22,8 +23,7 @@ export interface CreateProductDto {
   description: string;
   price: number;
   stock: number;
-  categoryId: number;
-  imageUrl?: string;
+  discount: number;
 }
 
 export interface UpdateProductDto extends CreateProductDto {

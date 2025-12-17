@@ -174,5 +174,56 @@
       "terms": "Conditions",
       "cookies": "Cookies"
     }
+  },
+  "admin": {
+    "title": "Gestion des produits",
+    "createButton": "Créer un produit",
+    "cancelButton": "Annuler",
+    "messages": {
+      "createSuccess": "Produit créé avec succès !",
+      "deleteSuccess": "Produit supprimé avec succès !",
+      "createError": "Erreur lors de la création du produit",
+      "deleteError": "Erreur lors de la suppression du produit",
+      "loadError": "Erreur lors du chargement des produits"
+    },
+    "form": {
+      "title": "Créer un nouveau produit",
+      "name": "Nom du produit",
+      "namePlaceholder": "Ex: iPhone 15 Pro",
+      "nameError": "Le nom doit contenir entre 3 et 100 caractères",
+      "description": "Description",
+      "descriptionPlaceholder": "Description détaillée du produit (minimum 10 caractères)",
+      "descriptionError": "La description doit contenir entre 10 et 500 caractères",
+      "price": "Prix",
+      "pricePlaceholder": "0.00",
+      "priceError": "Le prix doit être positif",
+      "stock": "Stock",
+      "stockPlaceholder": "0",
+      "stockError": "Le stock doit être positif",
+      "discount": "Réduction (%)",
+      "discountPlaceholder": "0",
+      "discountError": "La réduction doit être entre 0 et 100",
+      "submitButton": "Créer le produit",
+      "submitting": "Création en cours...",
+      "required": "*"
+    },
+    "list": {
+      "title": "Liste des produits",
+      "loading": "Chargement des produits...",
+      "empty": "Aucun produit trouvé",
+      "columns": {
+        "id": "ID",
+        "image": "Image",
+        "name": "Nom",
+        "description": "Description",
+        "price": "Prix",
+        "stock": "Stock",
+        "discount": "Réduction",
+        "actions": "Actions"
+      },
+      "deleteButton": "Supprimer",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer le produit \"{name}\" ?",
+      "noImage": "Pas d'image"
+    }
   }
 }

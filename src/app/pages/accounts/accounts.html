@@ -87,18 +87,15 @@
             <p>{{ 'accounts.login.subtitle' | translate }}</p>
           </div>
 
-          <form (ngSubmit)="onLogin()" class="auth-form">
+          <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
             <div class="form-group">
               <label for="login-username">{{ 'accounts.login.username' | translate }}</label>
               <input
                 type="text"
                 id="login-username"
                 class="form-control"
-                [ngModel]="loginForm().username"
-                (ngModelChange)="updateLoginForm('username', $event)"
-                name="login-username"
+                formControlName="username"
                 [placeholder]="'accounts.login.usernameplaceholder' | translate"
-                required
               />
             </div>
 
@@ -108,18 +105,15 @@
                 type="password"
                 id="login-password"
                 class="form-control"
-                [ngModel]="loginForm().password"
-                (ngModelChange)="updateLoginForm('password', $event)"
-                name="login-password"
+                formControlName="password"
                 [placeholder]="'accounts.login.passwordplaceholder' | translate"
-                required
               />
             </div>
 
             <button
               type="submit"
               class="btn btn-primary btn-block"
-              [disabled]="isLoading()"
+              [disabled]="isLoading() || loginForm.invalid"
             >
               @if (isLoading()) {
                 <span class="spinner"></span>
@@ -148,18 +142,15 @@
             <p>{{ 'accounts.register.subtitle' | translate }}</p>
           </div>
 
-          <form (ngSubmit)="onRegister()" class="auth-form">
+          <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
             <div class="form-group">
               <label for="register-username">{{ 'accounts.register.username' | translate }}</label>
               <input
                 type="text"
                 id="register-username"
                 class="form-control"
-                [ngModel]="registerForm().username"
-                (ngModelChange)="updateRegisterForm('username', $event)"
-                name="register-username"
+                formControlName="username"
                 [placeholder]="'accounts.register.usernameplaceholder' | translate"
-                required
               />
             </div>
 
@@ -169,11 +160,8 @@
                 type="email"
                 id="register-email"
                 class="form-control"
-                [ngModel]="registerForm().email"
-                (ngModelChange)="updateRegisterForm('email', $event)"
-                name="register-email"
+                formControlName="email"
                 [placeholder]="'accounts.register.emailplaceholder' | translate"
-                required
               />
             </div>
 
@@ -183,11 +171,8 @@
                 type="date"
                 id="register-birthdate"
                 class="form-control"
-                [ngModel]="registerForm().birthdate"
-                (ngModelChange)="updateRegisterForm('birthdate', $event)"
-                name="register-birthdate"
+                formControlName="birthdate"
                 [placeholder]="'accounts.register.birthdateplaceholder' | translate"
-                required
               />
             </div>
 
@@ -197,11 +182,8 @@
                 type="password"
                 id="register-password"
                 class="form-control"
-                [ngModel]="registerForm().password"
-                (ngModelChange)="updateRegisterForm('password', $event)"
-                name="register-password"
+                formControlName="password"
                 [placeholder]="'accounts.register.passwordplaceholder' | translate"
-                required
               />
             </div>
 
@@ -211,18 +193,15 @@
                 type="password"
                 id="register-confirm"
                 class="form-control"
-                [ngModel]="registerForm().confirmPassword"
-                (ngModelChange)="updateRegisterForm('confirmPassword', $event)"
-                name="register-confirm"
+                formControlName="confirmPassword"
                 [placeholder]="'accounts.register.confirmpasswordplaceholder' | translate"
-                required
               />
             </div>
 
             <button
               type="submit"
               class="btn btn-primary btn-block"
-              [disabled]="isLoading()"
+              [disabled]="isLoading() || registerForm.invalid"
             >
               @if (isLoading()) {
                 <span class="spinner"></span>

@@ -53,6 +53,14 @@
           }
         </a>
       </li>
+      @if (isAdmin()) {
+        <li>
+          <a routerLink="/admin" class="admin-link" (click)="navigateTo('/admin', $event)">
+            <span class="nav-emoji">⚙️</span>
+            <span>Admin</span>
+          </a>
+        </li>
+      }
       <li>
         <a routerLink="/accounts" class="account-link" (click)="navigateTo('/accounts', $event)">
           <span class="nav-emoji">👤</span>

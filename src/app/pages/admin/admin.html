@@ -1,0 +1,199 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>{{ 'admin.title' | translate }}</h1>
+    <button class="btn btn-primary" (click)="toggleCreateForm()">
+      @if (showCreateForm()) {
+        <span>✕ {{ 'admin.cancelButton' | translate }}</span>
+      } @else {
+        <span>➕ {{ 'admin.createButton' | translate }}</span>
+      }
+    </button>
+  </div>
+
+  <!-- Messages -->
+  @if (errorMessage()) {
+    <div class="alert alert-error">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      {{ errorMessage() }}
+    </div>
+  }
+  @if (successMessage()) {
+    <div class="alert alert-success">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      {{ successMessage() }}
+    </div>
+  }
+
+  <!-- Create Product Form -->
+  @if (showCreateForm()) {
+    <div class="create-form-section">
+      <h2>{{ 'admin.form.title' | translate }}</h2>
+      <form [formGroup]="productForm" (ngSubmit)="onCreateProduct()" class="product-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">{{ 'admin.form.name' | translate }} {{ 'admin.form.required' | translate }}</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              formControlName="name"
+              [placeholder]="'admin.form.namePlaceholder' | translate"
+            />
+            @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+              <span class="error-text">{{ 'admin.form.nameError' | translate }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="price">{{ 'admin.form.price' | translate }} (€) {{ 'admin.form.required' | translate }}</label>
+            <input
+              type="number"
+              id="price"
+              class="form-control"
+              formControlName="price"
+              [placeholder]="'admin.form.pricePlaceholder' | translate"
+              step="0.01"
+            />
+            @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+              <span class="error-text">{{ 'admin.form.priceError' | translate }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="stock">{{ 'admin.form.stock' | translate }} {{ 'admin.form.required' | translate }}</label>
+            <input
+              type="number"
+              id="stock"
+              class="form-control"
+              formControlName="stock"
+              [placeholder]="'admin.form.stockPlaceholder' | translate"
+            />
+            @if (productForm.get('stock')?.invalid && productForm.get('stock')?.touched) {
+              <span class="error-text">{{ 'admin.form.stockError' | translate }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="discount">{{ 'admin.form.discount' | translate }} {{ 'admin.form.required' | translate }}</label>
+            <input
+              type="number"
+              id="discount"
+              class="form-control"
+              formControlName="discount"
+              [placeholder]="'admin.form.discountPlaceholder' | translate"
+              min="0"
+              max="100"
+            />
+            @if (productForm.get('discount')?.invalid && productForm.get('discount')?.touched) {
+              <span class="error-text">{{ 'admin.form.discountError' | translate }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">{{ 'admin.form.description' | translate }} {{ 'admin.form.required' | translate }}</label>
+          <textarea
+            id="description"
+            class="form-control"
+            formControlName="description"
+            rows="4"
+            [placeholder]="'admin.form.descriptionPlaceholder' | translate"
+          ></textarea>
+          @if (productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+            <span class="error-text">{{ 'admin.form.descriptionError' | translate }}</span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-submit"
+          [disabled]="isLoading() || productForm.invalid"
+        >
+          @if (isLoading()) {
+            <span class="spinner"></span>
+            {{ 'admin.form.submitting' | translate }}
+          } @else {
+            {{ 'admin.form.submitButton' | translate }}
+          }
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- Products List -->
+  <div class="products-list-section">
+    <h2>{{ 'admin.list.title' | translate }} ({{ products().length }})</h2>
+    
+    @if (isLoading() && products().length === 0) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ 'admin.list.loading' | translate }}</p>
+      </div>
+    } @else if (products().length > 0) {
+      <div class="products-table">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ 'admin.list.columns.id' | translate }}</th>
+              <th>{{ 'admin.list.columns.image' | translate }}</th>
+              <th>{{ 'admin.list.columns.name' | translate }}</th>
+              <th>{{ 'admin.list.columns.description' | translate }}</th>
+              <th>{{ 'admin.list.columns.price' | translate }}</th>
+              <th>{{ 'admin.list.columns.stock' | translate }}</th>
+              <th>{{ 'admin.list.columns.discount' | translate }}</th>
+              <th>{{ 'admin.list.columns.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products(); track product.id) {
+              <tr>
+                <td>{{ product.id }}</td>
+                <td>
+                  @if (product.imageUrl) {
+                    <img [src]="product.imageUrl" [alt]="product.name" class="product-thumbnail">
+                  } @else {
+                    <div class="no-image-small">📦</div>
+                  }
+                </td>
+                <td class="product-name">{{ product.name }}</td>
+                <td class="product-description">{{ product.description }}</td>
+                <td class="product-price">{{ product.price.toFixed(2) }}€</td>
+                <td class="product-stock">
+                  <span 
+                    class="stock-badge"
+                    [class.in-stock]="product.stock > 0"
+                    [class.out-of-stock]="product.stock === 0"
+                  >
+                    {{ product.stock }}
+                  </span>
+                </td>
+                <td>{{ product.discount || 0 }}%</td>
+                <td class="actions">
+                  <button 
+                    class="btn btn-danger btn-sm"
+                    (click)="onDeleteProduct(product.id, product.name)"
+                    [disabled]="isLoading()"
+                  >
+                    🗑️ {{ 'admin.list.deleteButton' | translate }}
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <p>{{ 'admin.list.empty' | translate }}</p>
+      </div>
+    }
+  </div>
+</div>
