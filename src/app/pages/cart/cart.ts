@@ -15,18 +15,15 @@ import { FormsModule } from '@angular/forms';
 export class CartComponent {
   private cartService = inject(CartService);
 
-  // Expose cart data
   cartItems = this.cartService.items;
   itemCount = this.cartService.itemCount;
   totalPrice = this.cartService.totalPrice;
 
-  // Calculer les frais de livraison
   shippingCost = computed(() => {
     const total = this.totalPrice();
     return total > 0 ? (total >= 50 ? 0 : 5.99) : 0;
   });
 
-  // Calculer le total final
   finalTotal = computed(() => this.totalPrice() + this.shippingCost());
 
   updateQuantity(productId: number, newQuantity: number): void {
@@ -46,13 +43,10 @@ export class CartComponent {
   }
 
   checkout(): void {
-    // TODO: Implémenter le processus de paiement
     alert(this.getTranslation('cart.checkoutNotImplemented'));
   }
 
-  // Helper pour obtenir les traductions (à améliorer avec TranslateService si nécessaire)
   private getTranslation(key: string): string {
-    // Traduction simple pour les confirmations
     const translations: { [key: string]: string } = {
       'cart.confirmClear': 'Êtes-vous sûr de vouloir vider votre panier ?',
       'cart.checkoutNotImplemented': 'La fonctionnalité de paiement sera bientôt disponible !'

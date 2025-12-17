@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product';
 import { Product, CreateProductDto } from '../../models/product';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin',
@@ -15,6 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class AdminComponent implements OnInit {
   private productService = inject(ProductService);
   private fb = inject(FormBuilder);
+  private translateService = inject(TranslateService);
 
   products = signal<Product[]>([]);
   isLoading = signal<boolean>(false);
@@ -46,7 +47,9 @@ export class AdminComponent implements OnInit {
         this.isLoading.set(false);
       },
       error: (error) => {
-        this.errorMessage.set('Erreur lors du chargement des produits');
+        this.translateService.get('admin.messages.loadError').subscribe(msg => {
+          this.errorMessage.set(msg);
+        });
         this.isLoading.set(false);
       }
     });
@@ -83,7 +86,9 @@ export class AdminComponent implements OnInit {
 
     this.productService.createProduct(productDto).subscribe({
       next: (product) => {
-        this.successMessage.set('Produit créé avec succès !');
+        this.translateService.get('admin.messages.createSuccess').subscribe(msg => {
+          this.successMessage.set(msg);
+        });
         this.isLoading.set(false);
         this.showCreateForm.set(false);
         this.loadProducts();
@@ -93,34 +98,44 @@ export class AdminComponent implements OnInit {
         }, 3000);
       },
       error: (error) => {
-        this.errorMessage.set(error?.message || 'Erreur lors de la création du produit');
+        const errorMsg = error?.message;
+        this.translateService.get('admin.messages.createError').subscribe(msg => {
+          this.errorMessage.set(errorMsg || msg);
+        });
         this.isLoading.set(false);
       }
     });
   }
 
   onDeleteProduct(productId: number, productName: string) {
-    if (!confirm(`Êtes-vous sûr de vouloir supprimer le produit "${productName}" ?`)) {
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.errorMessage.set('');
-
-    this.productService.deleteProduct(productId).subscribe({
-      next: () => {
-        this.successMessage.set('Produit supprimé avec succès !');
-        this.isLoading.set(false);
-        this.loadProducts();
-        
-        setTimeout(() => {
-          this.successMessage.set('');
-        }, 3000);
-      },
-      error: (error) => {
-        this.errorMessage.set(error?.message || 'Erreur lors de la suppression du produit');
-        this.isLoading.set(false);
+    this.translateService.get('admin.list.deleteConfirm', { name: productName }).subscribe(msg => {
+      if (!confirm(msg)) {
+        return;
       }
+
+      this.isLoading.set(true);
+      this.errorMessage.set('');
+
+      this.productService.deleteProduct(productId).subscribe({
+        next: () => {
+          this.translateService.get('admin.messages.deleteSuccess').subscribe(successMsg => {
+            this.successMessage.set(successMsg);
+          });
+          this.isLoading.set(false);
+          this.loadProducts();
+          
+          setTimeout(() => {
+            this.successMessage.set('');
+          }, 3000);
+        },
+        error: (error) => {
+          const errorMsg = error?.message;
+          this.translateService.get('admin.messages.deleteError').subscribe(msg => {
+            this.errorMessage.set(errorMsg || msg);
+          });
+          this.isLoading.set(false);
+        }
+      });
     });
   }
 }

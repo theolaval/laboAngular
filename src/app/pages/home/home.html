@@ -44,7 +44,7 @@
             }
             <div class="product-footer">
               <div class="price-section">
-                <span class="price">${{ product.price.toFixed(2) }}</span>
+                <span class="price">{{ product.price.toFixed(2) }}€</span>
                 <span class="stock-info" [class.in-stock]="product.stock > 0">
                   {{ product.stock > 0 ? ('home.products.inStock' | translate) : ('home.products.outOfStock' | translate) }}
                 </span>

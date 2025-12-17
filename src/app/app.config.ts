@@ -1,7 +1,10 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import localeEn from '@angular/common/locales/en';
 
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -10,6 +13,9 @@ import { authInterceptor } from './interceptors/auth.interceptor';
 import { errorInterceptor } from './interceptors/error.interceptor';
 import { loadingInterceptor } from './interceptors/loading.interceptor';
 import { loggingInterceptor } from './interceptors/logging.interceptor';
+
+registerLocaleData(localeFr);
+registerLocaleData(localeEn);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,5 +36,7 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json',
       }),
     }),
+
+    { provide: LOCALE_ID, useValue: 'fr-FR' }
   ],
 };

@@ -3,7 +3,6 @@ import { catchError, throwError, retry } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
-    // Ne pas retry pour les requêtes d'authentification
     retry({
       count: req.url.includes('/auth/') ? 0 : 1,
       delay: 1000

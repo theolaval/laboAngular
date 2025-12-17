@@ -12,10 +12,8 @@ export interface CartItem {
 export class CartService {
   private readonly STORAGE_KEY = 'amazoun_cart';
   
-  // Signal pour stocker les items du panier
   private cartItems = signal<CartItem[]>(this.loadCartFromStorage());
   
-  // Computed signals pour les statistiques du panier
   items = computed(() => this.cartItems());
   itemCount = computed(() => 
     this.cartItems().reduce((total, item) => total + item.quantity, 0)

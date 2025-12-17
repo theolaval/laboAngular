@@ -31,7 +31,6 @@ export class Accounts implements OnInit, OnDestroy {
   registerForm: FormGroup;
 
   constructor() {
-    // Initialiser les formulaires avec validation
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -98,17 +97,14 @@ export class Accounts implements OnInit, OnDestroy {
       next: (response) => {
         this.isLoading.set(false);
         
-        // Afficher le message de succès
         this.translateService.get('accounts.messages.loginSuccess').subscribe(message => {
           this.successMessage.set(message);
         });
         
-        // Mettre à jour l'état de connexion et l'utilisateur
         this.isLoggedIn.set(true);
         this.currentUser.set(response.user);
         this.resetLoginForm();
         
-        // Effacer le message après 3 secondes
         setTimeout(() => {
           this.successMessage.set('');
         }, 3000);

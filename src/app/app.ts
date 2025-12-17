@@ -25,7 +25,6 @@ export class AppComponent {
 
     this._translate.setFallbackLang('en');
 
-    // Récupérer la langue sauvegardée depuis le localStorage
     const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
     this._translate.use(savedLanguage);
   }

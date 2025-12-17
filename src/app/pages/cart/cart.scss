@@ -21,7 +21,6 @@
   }
 }
 
-/* Panier vide */
 .empty-cart {
   text-align: center;
   padding: 4rem 2rem;
@@ -48,7 +47,6 @@
   }
 }
 
-/* Contenu du panier */
 .cart-content {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -56,7 +54,6 @@
   align-items: start;
 }
 
-/* Liste des produits */
 .cart-items {
   background: white;
   border-radius: 12px;
@@ -263,7 +260,6 @@
   }
 }
 
-/* Résumé de la commande */
 .cart-summary {
   position: sticky;
   top: 2rem;
@@ -352,7 +348,6 @@
   }
 }
 
-/* Boutons */
 .btn {
   display: block;
   width: 100%;
@@ -400,8 +395,7 @@
   }
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .cart-content {
     grid-template-columns: 1fr;
   }

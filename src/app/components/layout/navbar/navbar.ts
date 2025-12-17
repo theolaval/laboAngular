@@ -41,7 +41,6 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Vérifier si l'utilisateur est admin
     this.authService.currentUser$.subscribe(user => {
       this.isAdmin.set(user?.role === 'Admin');
     });
